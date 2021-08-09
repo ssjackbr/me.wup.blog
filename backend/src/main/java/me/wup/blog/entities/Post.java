@@ -5,7 +5,6 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
 
-
 @Entity
 @Table (name = "tb_post")
 public class Post implements Serializable {
@@ -14,9 +13,11 @@ public class Post implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String title;
-    private String author;
-    private String bodyText;
+    private String postTitle;
+    private String postAuthor;
+    private String postContent;
+    private String postStatus;
+    private String postName;
 
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant createdAt;
@@ -34,16 +35,24 @@ public class Post implements Serializable {
         updateAt = Instant.now();
     }
 
+    @ManyToOne
+    @JoinColumn (name = "user_id")
+    private User user;
+
     public Post() {
     }
 
-    public Post(Long id, String title, String bodyText, String author, Instant createdAt, Instant updateAt) {
+    public Post(Long id, String postTitle, String postAuthor, String postContent, String postStatus, Instant createdAt, Instant updateAt, User user) {
+
         this.id = id;
-        this.title = title;
-        this.bodyText = bodyText;
-        this.author = author;
+        this.postTitle = postTitle;
+        this.postAuthor = postAuthor;
+        this.postContent = postContent;
+        this.postStatus = postStatus;
+        this.postName = postTitle;
         this.createdAt = createdAt;
         this.updateAt = updateAt;
+        this.user = user;
     }
 
     public Long getId() {
@@ -54,28 +63,44 @@ public class Post implements Serializable {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getPostTitle() {
+        return postTitle;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setPostTitle(String postTitle) {
+        this.postTitle = postTitle;
     }
 
-    public String getBodyText() {
-        return bodyText;
+    public String getPostAuthor() {
+        return postAuthor;
     }
 
-    public void setBodyText(String bodyText) {
-        this.bodyText = bodyText;
+    public void setPostAuthor(String postAuthor) {
+        this.postAuthor = postAuthor;
     }
 
-    public String getAuthor() {
-        return author;
+    public String getPostContent() {
+        return postContent;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setPostContent(String postContent) {
+        this.postContent = postContent;
+    }
+
+    public String getPostStatus() {
+        return postStatus;
+    }
+
+    public void setPostStatus(String postStatus) {
+        this.postStatus = postStatus;
+    }
+
+    public String getPostName() {
+        return postName;
+    }
+
+    public void setPostName(String postName) {
+        this.postName = postName;
     }
 
     public Instant getCreatedAt() {
@@ -92,6 +117,14 @@ public class Post implements Serializable {
 
     public void setUpdateAt(Instant updateAt) {
         this.updateAt = updateAt;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override
