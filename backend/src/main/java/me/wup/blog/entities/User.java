@@ -42,8 +42,7 @@ public class User implements Serializable {
     public User() {
     }
 
-    public User(Long id, String userName, String displayName, String login, String email, String password,
-                int userType, String userStatus, Instant dateRegistered) {
+    public User(Long id, String userName, String displayName, String login, String email, String password, int userType, String userStatus, Instant dateRegistered) {
         this.id = id;
         this.userName = userName;
         this.displayName = displayName;
@@ -121,6 +120,18 @@ public class User implements Serializable {
 
     public Instant getDateRegistered() {
         return dateRegistered;
+    }
+
+    public void setDateRegistered(Instant dateRegistered) {
+        this.dateRegistered = dateRegistered;
+    }
+
+    public List<Post> getPost() {
+        return post;
+    }
+
+    public void setPost(List<Post> post) {
+        this.post = post;
     }
 
     @Override

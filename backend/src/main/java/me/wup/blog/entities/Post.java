@@ -39,6 +39,10 @@ public class Post implements Serializable {
     @JoinColumn (name = "user_id")
     private User user;
 
+    //Remover após implementação da Classe PostDTO e ajuste na UserDTO
+    public Post(Post post) {
+    }
+
     public Post() {
     }
 
