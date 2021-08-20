@@ -32,12 +32,17 @@ public class User implements Serializable {
 
     @PrePersist
     public void preCreated (){
+
         dateRegistered = Instant.now();
     }
 
+    @OneToMany(mappedBy = "user",targetEntity = Post.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Post> posts ;
 
-    @OneToMany (mappedBy = "user")
-    private List<Post> post = new ArrayList<>();
+    public List<Post> getPosts() {
+        return posts;
+    }
+
 
     public User() {
     }
@@ -126,13 +131,7 @@ public class User implements Serializable {
         this.dateRegistered = dateRegistered;
     }
 
-    public List<Post> getPost() {
-        return post;
-    }
 
-    public void setPost(List<Post> post) {
-        this.post = post;
-    }
 
     @Override
     public boolean equals(Object o) {

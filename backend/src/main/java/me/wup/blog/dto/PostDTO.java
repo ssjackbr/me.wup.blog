@@ -1,5 +1,7 @@
-package me.wup.blog.entities;
+package me.wup.blog.dto;
 
+import me.wup.blog.entities.Post;
+import me.wup.blog.entities.User;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -7,10 +9,9 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
+import java.util.Set;
 
-@Entity
-@Table (name = "tb_post")
-public class Post implements Serializable {
+public class PostDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -18,7 +19,7 @@ public class Post implements Serializable {
     private Long id;
 
     @NotBlank
-    @Size (min = 1, max = 40)
+    @Size(min = 1, max = 40)
     private String postTitle;
 
     @NotBlank
@@ -38,7 +39,6 @@ public class Post implements Serializable {
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant updateAt;
 
-
     @PrePersist
     public void preCreated (){
         createdAt = Instant.now();
@@ -49,24 +49,33 @@ public class Post implements Serializable {
         updateAt = Instant.now();
     }
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
 
-    public Post() {
+    public PostDTO() {
     }
 
-    public Post (Long id, String postTitle, User user, String postContent, String postStatus, Instant createdAt, Instant updateAt) {
-
+    public PostDTO(Long id, @NotBlank @Size(min = 1, max = 40) String postTitle, @NotBlank @Size(min = 1, max = 40) String postAuthor, @NotBlank String postContent, @NotNull String postStatus, Instant createdAt, Instant updateAt) {
         this.id = id;
         this.postTitle = postTitle;
-        this.postAuthor = user.getUserName();
+        this.postAuthor = postAuthor;
         this.postContent = postContent;
         this.postStatus = postStatus;
         this.createdAt = createdAt;
         this.updateAt = updateAt;
     }
 
+    public PostDTO (Post post){
+        this.id = post.getId();
+        this.postTitle = post.getPostTitle();
+        this.postAuthor = post.getPostAuthor();
+        this.postContent = post.getPostContent();
+        this.postStatus = post.getPostStatus();
+        this.createdAt = post.getCreatedAt();
+        this.updateAt = post.getUpdateAt();
+    }
+
+    public PostDTO (Post post, Set<User> users){
+        this(post);
+    }
 
     public Long getId() {
         return id;
@@ -116,24 +125,16 @@ public class Post implements Serializable {
         this.createdAt = createdAt;
     }
 
-    public Instant getUpdateAt() {
-        return updateAt;
-    }
-
     public void setUpdateAt(Instant updateAt) {
         this.updateAt = updateAt;
-    }
-
-    public void authorPost (User user){
-
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Post post = (Post) o;
-        return Objects.equals(id, post.id);
+        PostDTO postDTO = (PostDTO) o;
+        return Objects.equals(id, postDTO.id);
     }
 
     @Override

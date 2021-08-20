@@ -35,7 +35,10 @@ public class UserDTO implements Serializable {
         @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
         private Instant dateRegistered;
 
-        @PrePersist
+    public UserDTO(User entityUser, List<Post> posts) {
+    }
+
+    @PrePersist
         public void preCreated (){
             dateRegistered = Instant.now();
         }
@@ -69,7 +72,6 @@ public class UserDTO implements Serializable {
         userType = user.getUserType();
         userStatus = user.getUserStatus();
         dateRegistered = user.getDateRegistered();
-        user.getPost().forEach(post -> this.posts.add(new Post(post)));
     }
 
     public Long getId() {
