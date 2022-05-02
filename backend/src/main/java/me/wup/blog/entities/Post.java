@@ -1,13 +1,20 @@
 package me.wup.blog.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.Objects;
 
+@Getter
+@Setter
+@EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table (name = "tb_post")
 public class Post implements Serializable {
@@ -19,18 +26,18 @@ public class Post implements Serializable {
 
     @NotBlank
     @Size (min = 1, max = 40)
-    private String postTitle;
+    private String title;
 
     @NotBlank
     @Size (min = 1, max = 40)
-    private String postAuthor;
+    private String author;
 
     @NotBlank
     @Lob
-    private String postContent;
+    private String content;
 
     @NotNull
-    private String postStatus;
+    private Boolean status;
 
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant createdAt;
@@ -49,95 +56,25 @@ public class Post implements Serializable {
         updateAt = Instant.now();
     }
 
-    @ManyToOne
+    @ManyToOne (fetch = FetchType.EAGER)
+    @JsonIgnore
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Post() {
-    }
-
-    public Post (Long id, String postTitle, User user, String postContent, String postStatus, Instant createdAt, Instant updateAt) {
+    public Post (Long id, String title, User user, String content, Boolean status, Instant createdAt, Instant updateAt) {
 
         this.id = id;
-        this.postTitle = postTitle;
-        this.postAuthor = user.getUserName();
-        this.postContent = postContent;
-        this.postStatus = postStatus;
+        this.title = title;
+        this.author = user.getUserName();
+        this.content = content;
+        this.status = status;
         this.createdAt = createdAt;
         this.updateAt = updateAt;
     }
 
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getPostTitle() {
-        return postTitle;
-    }
-
-    public void setPostTitle(String postTitle) {
-        this.postTitle = postTitle;
-    }
-
-    public String getPostAuthor() {
-        return postAuthor;
-    }
-
-    public void setPostAuthor(String postAuthor) {
-        this.postAuthor = postAuthor;
-    }
-
-    public String getPostContent() {
-        return postContent;
-    }
-
-    public void setPostContent(String postContent) {
-        this.postContent = postContent;
-    }
-
-    public String getPostStatus() {
-        return postStatus;
-    }
-
-    public void setPostStatus(String postStatus) {
-        this.postStatus = postStatus;
-    }
-
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Instant getUpdateAt() {
-        return updateAt;
-    }
-
-    public void setUpdateAt(Instant updateAt) {
-        this.updateAt = updateAt;
-    }
 
     public void authorPost (User user){
 
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Post post = (Post) o;
-        return Objects.equals(id, post.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }
