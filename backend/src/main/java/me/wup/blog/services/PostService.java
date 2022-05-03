@@ -5,14 +5,13 @@ import me.wup.blog.dto.PostDTO;
 import me.wup.blog.entities.Post;
 import me.wup.blog.repositories.PostRepository;
 import me.wup.blog.services.exceptions.ResourceNotFoundException;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
@@ -28,29 +27,34 @@ public class PostService implements Serializable {
         return new PostDTO(entity);
     }
 
+
     @Transactional(readOnly = true)
-    public List<PostDTO> findAll (){
-        List<Post> postList = postRepository.findAll();
-        return postList.stream().map(PostDTO::new).collect(Collectors.toList());
+    public Page<PostDTO> findAll(Pageable pageable){
+        Page<Post> postList = postRepository.findAll(pageable);
+        return postList.map(post -> new PostDTO(post));
     }
 
     @Transactional
-    public ResponseEntity<Post> saveNewPost (PostDTO postDTO){
+    public PostDTO insertPost (PostDTO postDTO){
 
             if (postDTO.getContent() == null || postDTO.getContent().isBlank() || postDTO.getContent().isEmpty()) {
-                return ResponseEntity.badRequest().build();
+                throw new ResourceNotFoundException("ERROR:Entity not found!");
             }
 
-        return ResponseEntity.ok().body(postRepository.save(convertDtoToEntity(postDTO)));
+        return new PostDTO(postRepository.save(convertDtoToEntity(postDTO))) ;
     }
 
     @Transactional
-    public ResponseEntity<Post> updatePost (PostDTO updatedContent, Long id) {
-        Post postToUpdated = postRepository.getById(id);
+    public PostDTO updatePost (PostDTO updatedContent, Long id) {
+
+        Optional<Post> entityPost = Optional.of(postRepository.getById(id));
+        Post postToUpdated = entityPost.orElseThrow(() ->new ResourceNotFoundException("ERROR:Entity not found!"));
+
         postToUpdated.setTitle(updatedContent.getTitle());
         postToUpdated.setContent(updatedContent.getContent());
         postToUpdated.setStatus(updatedContent.getStatus());
-        return ResponseEntity.ok().body(postRepository.save(postToUpdated));
+
+        return new PostDTO(postRepository.save(postToUpdated));
     }
 
     private Post convertDtoToEntity (PostDTO postDTO){

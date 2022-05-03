@@ -3,6 +3,8 @@ package me.wup.blog.entities;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.*;
@@ -21,16 +23,22 @@ public class User implements Serializable {
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message  = "Campo obrigatório!")
     private String firstName;
+
+    @NotBlank(message  = "Campo obrigatório!")
     private String lastName;
+
+    @Column (unique = true)
     private String nickName;
 
     @Column (unique = true)
+    @Email(message = "Insira um e-mail válido!")
     private String email;
 
     private String password;
     private int userType;
-    private String userStatus;
+    private String userStatus = "ACTIVE";
 
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant dateRegistered;
