@@ -2,14 +2,13 @@ package me.wup.blog.dto;
 
 import lombok.*;
 import me.wup.blog.entities.Post;
-import me.wup.blog.entities.User;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.Set;
 
 
 @Getter
@@ -63,10 +62,6 @@ public class PostDTO implements Serializable {
         this.createdAt = post.getCreatedAt();
         this.updateAt = post.getUpdateAt();
 
-    }
-    public PostDTO (Post post, Set<User> users){
-
-        this(post);
     }
 
 }

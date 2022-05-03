@@ -1,6 +1,5 @@
 package me.wup.blog.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -41,18 +40,17 @@ public class User implements Serializable {
         dateRegistered = Instant.now();
     }
 
-    @OneToMany(mappedBy = "user",targetEntity = Post.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JsonIgnore
-    private List<Post> posts ;
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "tb_user_post",
+    joinColumns = @JoinColumn (name = "user_id"),
+    inverseJoinColumns = @JoinColumn(name = "post_id"))
+    private Set<Post> post = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "tb_user_role",
     joinColumns = @JoinColumn(name = "user_id"),
     inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
-    public List<Post> getPosts() {
-        return posts;
-    }
 
 }
