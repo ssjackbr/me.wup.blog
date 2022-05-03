@@ -3,9 +3,6 @@ package me.wup.blog.entities;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.Instant;
 
@@ -23,19 +20,12 @@ public class Post implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
-    @Size (min = 1, max = 40)
     private String title;
-
-    @NotBlank
-    @Size (min = 1, max = 40)
     private String author;
 
-    @NotBlank
     @Lob
     private String content;
-
-    @NotNull
+    private String imageUrl;
     private Boolean status;
 
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
@@ -53,6 +43,5 @@ public class Post implements Serializable {
     public void preUpdate (){
         updateAt = Instant.now();
     }
-
 
 }

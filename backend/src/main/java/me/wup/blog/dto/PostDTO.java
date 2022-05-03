@@ -5,16 +5,13 @@ import me.wup.blog.entities.Post;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.Instant;
 
-
+@RequiredArgsConstructor
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @EqualsAndHashCode
 public class PostDTO implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -35,7 +32,9 @@ public class PostDTO implements Serializable {
     @Lob
     private String content;
 
-    private @NotNull Boolean status;
+    private String imageUrl;
+
+    private Boolean status;
 
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant createdAt;
@@ -53,15 +52,15 @@ public class PostDTO implements Serializable {
         updateAt = Instant.now();
     }
 
-    public PostDTO (Post post){
-        this.id = post.getId();
-        this.title = post.getTitle();
-        this.author = post.getAuthor();
-        this.content = post.getContent();
-        this.status = post.getStatus();
-        this.createdAt = post.getCreatedAt();
-        this.updateAt = post.getUpdateAt();
-
-    }
+     public PostDTO (Post post) {
+         this.id = post.getId();
+         this.title = post.getTitle();
+         this.author = post.getAuthor();
+         this.content = post.getContent();
+         this.imageUrl = post.getImageUrl();
+         this.status = post.getStatus();
+         this.createdAt = post.getCreatedAt();
+         this.updateAt = post.getUpdateAt();
+     }
 
 }

@@ -31,14 +31,12 @@ public class UserDTO implements Serializable {
     @Column (unique = true)
     private String nickName;
 
-    @Column (unique = true)
-    @Email(message = "Insira um e-mail válido!")
+
     private String email;
 
     private int userType;
     private String userStatus;
 
-    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant dateRegistered;
 
     Set<RoleDTO> roles = new HashSet<>();
