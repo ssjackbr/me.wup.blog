@@ -23,15 +23,11 @@ public class User implements Serializable {
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message  = "Campo obrigatório!")
+
     private String firstName;
-
-    @NotBlank(message  = "Campo obrigatório!")
     private String lastName;
-
     @Column (unique = true)
     private String nickName;
-
     @Column (unique = true)
     @Email(message = "Insira um e-mail válido!")
     private String email;
@@ -59,6 +55,5 @@ public class User implements Serializable {
     joinColumns = @JoinColumn(name = "user_id"),
     inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
-
 
 }
