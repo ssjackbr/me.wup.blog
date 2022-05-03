@@ -1,6 +1,5 @@
 package me.wup.blog.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -45,7 +44,6 @@ public class Post implements Serializable {
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant updateAt;
 
-
     @PrePersist
     public void preCreated (){
         createdAt = Instant.now();
@@ -56,25 +54,5 @@ public class Post implements Serializable {
         updateAt = Instant.now();
     }
 
-    @ManyToOne (fetch = FetchType.EAGER)
-    @JsonIgnore
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    public Post (Long id, String title, User user, String content, Boolean status, Instant createdAt, Instant updateAt) {
-
-        this.id = id;
-        this.title = title;
-        this.author = user.getUserName();
-        this.content = content;
-        this.status = status;
-        this.createdAt = createdAt;
-        this.updateAt = updateAt;
-    }
-
-
-    public void authorPost (User user){
-
-    }
 
 }

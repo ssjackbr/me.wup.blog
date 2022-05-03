@@ -1,149 +1,66 @@
 package me.wup.blog.dto;
 
-import me.wup.blog.entities.Post;
+import lombok.*;
 import me.wup.blog.entities.User;
 
+import javax.persistence.Column;
+import javax.persistence.PrePersist;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
 public class UserDTO implements Serializable {
-        private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-        private Long id;
+    private Long id;
 
-        @NotBlank(message  = "Campo obrigatório!")
-        private String userName;
+    @NotBlank(message  = "Campo obrigatório!")
+    private String firstName;
 
-        @NotBlank(message  = "Campo obrigatório!")
-        private String displayName;
+    @NotBlank(message  = "Campo obrigatório!")
+    private String lastName;
 
-        @Column (unique = true)
-        private String login;
+    @Column (unique = true)
+    private String nickName;
 
-        @Column (unique = true)
-        @Email(message = "Insira um e-mail válido!")
-        private String email;
+    @Column (unique = true)
+    @Email(message = "Insira um e-mail válido!")
+    private String email;
 
-        private String password;
-        private int userType;
-        private String userStatus;
+    private int userType;
+    private String userStatus;
 
-        @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
-        private Instant dateRegistered;
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    private Instant dateRegistered;
 
-    public UserDTO(User entityUser, List<Post> posts) {
+    Set<RoleDTO> roles = new HashSet<>();
+
+    Set<PostDTO> posts = new HashSet<>();
+
+    public UserDTO(User entityUser) {
+        id = entityUser.getId();
+        firstName = entityUser.getFirstName();
+        lastName = entityUser.getLastName();
+        nickName = entityUser.getNickName();
+        email = entityUser.getEmail();
+        userStatus = entityUser.getUserStatus();
+        userType = entityUser.getUserType();
+        dateRegistered = entityUser.getDateRegistered();
+        entityUser.getRoles().forEach(role -> this.roles.add(new RoleDTO(role)));
+        entityUser.getPost().forEach(post -> this.posts.add(new PostDTO(post)));
     }
 
     @PrePersist
-        public void preCreated (){
-            dateRegistered = Instant.now();
-        }
-
-        // Criar PostDTO para aplicar o set
-        private List<Post> posts = new ArrayList<>();
-
-        public UserDTO() {
-        }
-
-        public UserDTO(Long id, @NotBlank(message = "Campo obrigatório!") String userName,
-                   @NotBlank(message = "Campo obrigatório!") String displayName,
-                   String login, @Email(message = "Insira um e-mail válido!") String email,
-                   int userType, String userStatus, Instant dateRegistered) {
-        this.id = id;
-        this.userName = userName;
-        this.displayName = displayName;
-        this.login = login;
-        this.email = email;
-        this.userType = userType;
-        this.userStatus = userStatus;
-        this.dateRegistered = dateRegistered;
+    public void preCreated (){
+        dateRegistered = Instant.now();
     }
 
-    public UserDTO (User user) {
-        id = user.getId();
-        userName = user.getUserName();
-        displayName = user.getDisplayName();
-        login = user.getLogin();
-        email = user.getEmail();
-        userType = user.getUserType();
-        userStatus = user.getUserStatus();
-        dateRegistered = user.getDateRegistered();
-    }
-
-    public Long getId() {
-            return id;
-        }
-
-        public void setId(Long id) {
-            this.id = id;
-        }
-
-        public String getUserName() {
-            return userName;
-        }
-
-        public void setUserName(String userName) {
-            this.userName = userName;
-        }
-
-        public String getDisplayName() {
-            return displayName;
-        }
-
-        public void setDisplayName(String displayName) {
-            this.displayName = displayName;
-        }
-
-        public String getLogin() {
-            return login;
-        }
-
-        public void setLogin(String login) {
-            this.login = login;
-        }
-
-        public String getEmail() {
-            return email;
-        }
-
-        public void setEmail(String email) {
-            this.email = email;
-        }
-
-        public int getUserType() {
-            return userType;
-        }
-
-        public void setUserType(int userType) {
-            this.userType = userType;
-        }
-
-        public String getUserStatus() {
-            return userStatus;
-        }
-
-        public void setUserStatus(String userStatus) {
-            this.userStatus = userStatus;
-        }
-
-        public Instant getDateRegistered() {
-            return dateRegistered;
-        }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        UserDTO userDTO = (UserDTO) o;
-        return Objects.equals(id, userDTO.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }
