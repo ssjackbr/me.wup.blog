@@ -2,12 +2,10 @@ package me.wup.blog.controller;
 
 import lombok.AllArgsConstructor;
 import me.wup.blog.dto.PostDTO;
+import me.wup.blog.entities.Post;
 import me.wup.blog.services.PostService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
 import java.util.List;
@@ -20,15 +18,26 @@ public class PostController implements Serializable {
 
     private final PostService postService;
 
+    @GetMapping
+    public List<PostDTO> findAllPosts() {
+        return postService.findAll();
+    }
+
     @GetMapping (value = "/{id}")
     public ResponseEntity findById (@PathVariable Long id){
         PostDTO dto  = postService.findById(id);
         return ResponseEntity.ok().body(dto);
     }
 
-    @GetMapping
-    public List<PostDTO> findAllPosts () {
-       return postService.findAll();
+    @PostMapping(value = "/new")
+    public ResponseEntity<Post> insertNewPost (@RequestBody PostDTO postDTO){
+        return postService.saveNewPost(postDTO);
+    }
+
+    @PutMapping(value = "/update/{id}")
+    public ResponseEntity<Post> updatePost (@RequestBody PostDTO updatedContent,
+                                            @PathVariable Long id){
+        return postService.updatePost(updatedContent, id);
     }
 
 }
