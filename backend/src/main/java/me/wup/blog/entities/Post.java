@@ -9,6 +9,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.List;
 
 @Getter
 @Setter
@@ -45,7 +46,6 @@ public class Post implements Serializable {
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant updateAt;
 
-
     @PrePersist
     public void preCreated (){
         createdAt = Instant.now();
@@ -65,13 +65,12 @@ public class Post implements Serializable {
 
         this.id = id;
         this.title = title;
-        this.author = user.getUserName();
+        this.author = user.getFirstName().concat(" "+user.getLastName());
         this.content = content;
         this.status = status;
         this.createdAt = createdAt;
         this.updateAt = updateAt;
     }
-
 
     public void authorPost (User user){
 

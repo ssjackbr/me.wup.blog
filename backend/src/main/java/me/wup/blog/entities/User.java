@@ -1,5 +1,6 @@
 package me.wup.blog.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -21,11 +22,9 @@ public class User implements Serializable {
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String userName;
-    private String displayName;
-
-    @Column (unique = true)
-    private String login;
+    private String firstName;
+    private String lastName;
+    private String nickName;
 
     @Column (unique = true)
     private String email;
@@ -39,12 +38,18 @@ public class User implements Serializable {
 
     @PrePersist
     public void preCreated (){
-
         dateRegistered = Instant.now();
     }
 
-    @OneToMany(mappedBy = "user",targetEntity = Post.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user",targetEntity = Post.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Post> posts ;
+
+    @ManyToMany
+    @JoinTable(name = "tb_user_role",
+    joinColumns = @JoinColumn(name = "user_id"),
+    inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
 
     public List<Post> getPosts() {
         return posts;

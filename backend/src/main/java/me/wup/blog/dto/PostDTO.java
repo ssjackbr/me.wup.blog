@@ -62,6 +62,7 @@ public class PostDTO implements Serializable {
         this.status = post.getStatus();
         this.createdAt = post.getCreatedAt();
         this.updateAt = post.getUpdateAt();
+
     }
     public PostDTO (Post post, Set<User> users){
 

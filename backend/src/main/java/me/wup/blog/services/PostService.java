@@ -56,7 +56,6 @@ public class PostService implements Serializable {
     private Post convertDtoToEntity (PostDTO postDTO){
         Post newPost = new Post();
         newPost.setContent(postDTO.getContent());
-        newPost.setAuthor(postDTO.getAuthor());
         newPost.setTitle(postDTO.getTitle());
         newPost.setStatus(postDTO.getStatus());
         return newPost;
