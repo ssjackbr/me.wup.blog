@@ -23,16 +23,24 @@ public class User implements Serializable {
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
 
-
+    @NotBlank(message  = "Required firstName field!")
     private String firstName;
+
+    @NotBlank(message  = "Required lastName field!")
     private String lastName;
+
+    @NotBlank(message  = "Required nickName field!")
     @Column (unique = true)
     private String nickName;
+
     @Column (unique = true)
-    @Email(message = "Insira um e-mail válido!")
+    @NotBlank(message  = "Required email field!")
+    @Email(message = "Required valid email!")
     private String email;
 
+    @NotBlank(message  = "Required password field!")
     private String password;
+
     private int userType;
     private String userStatus = "ACTIVE";
 

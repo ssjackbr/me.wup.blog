@@ -22,16 +22,18 @@ public class UserDTO implements Serializable {
 
     private Long id;
 
-    @NotBlank(message  = "Campo obrigatório!")
+    @NotBlank(message  = "Required firstName field!")
     private String firstName;
 
-    @NotBlank(message  = "Campo obrigatório!")
+    @NotBlank(message  = "Required lastName field!")
     private String lastName;
 
+    @NotBlank(message  = "Required nickName field!")
     @Column (unique = true)
     private String nickName;
 
-
+    @NotBlank(message  = "Required email field!")
+    @Column (unique = true)
     private String email;
 
     private int userType;

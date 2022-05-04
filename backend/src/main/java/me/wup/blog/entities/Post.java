@@ -3,6 +3,7 @@ package me.wup.blog.entities;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.time.Instant;
 
@@ -20,11 +21,16 @@ public class Post implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message  = "Required title field!")
     private String title;
+
+    @NotBlank(message  = "Required author field!")
     private String author;
 
+    @NotBlank(message  = "Required content field!")
     @Lob
     private String content;
+
     private String imageUrl;
     private Boolean status;
 
