@@ -21,6 +21,8 @@ public class StandardError implements Serializable {
     private String message;
     private String path;
 
+    private ValidationError validationError;
+
     private List<FieldMessage> listErrors = new ArrayList<>();
 
     public void addError (String fieldName, String message){
