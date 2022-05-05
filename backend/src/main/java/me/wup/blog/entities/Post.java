@@ -24,7 +24,6 @@ public class Post implements Serializable {
     @NotBlank(message  = "Required title field!")
     private String title;
 
-    @NotBlank(message  = "Required author field!")
     private String author;
 
     @NotBlank(message  = "Required content field!")
