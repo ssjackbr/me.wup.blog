@@ -52,6 +52,7 @@ public class PostService implements Serializable {
         Post postToUpdated = entityPost.orElseThrow(() ->new ResourceNotFoundException("ERROR: Entity not found!"));
 
         postToUpdated.setTitle(updatedContent.getTitle());
+        postToUpdated.setAuthor(updatedContent.getAuthor());
         postToUpdated.setContent(updatedContent.getContent());
         postToUpdated.setStatus(updatedContent.getStatus());
         postToUpdated.setImageUrl(updatedContent.getImageUrl());
@@ -63,6 +64,7 @@ public class PostService implements Serializable {
         Post newPost = new Post();
         newPost.setContent(postDTO.getContent());
         newPost.setTitle(postDTO.getTitle());
+        newPost.setAuthor(postDTO.getAuthor());
         newPost.setStatus(postDTO.getStatus());
         newPost.setImageUrl(postDTO.getImageUrl());
         return newPost;
