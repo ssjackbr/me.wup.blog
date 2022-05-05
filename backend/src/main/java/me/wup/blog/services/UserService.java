@@ -1,10 +1,7 @@
 package me.wup.blog.services;
 
 import lombok.AllArgsConstructor;
-import me.wup.blog.dto.PostDTO;
-import me.wup.blog.dto.RoleDTO;
-import me.wup.blog.dto.UserDTO;
-import me.wup.blog.dto.UserInsertDTO;
+import me.wup.blog.dto.*;
 import me.wup.blog.entities.Post;
 import me.wup.blog.entities.Role;
 import me.wup.blog.entities.User;
@@ -59,7 +56,7 @@ public class UserService implements Serializable {
     }
 
     @Transactional
-    public UserDTO updateUser(UserDTO userDTO, Long id){
+    public UserDTO updateUser(UserUpdateDTO userDTO, Long id){
         try {
             Optional<User> userEntity = userRepository.findById(id);
             User user = userEntity.orElseThrow(() ->new ResourceNotFoundException("ERROR: Entity not found!"));

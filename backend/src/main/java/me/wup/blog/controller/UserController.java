@@ -3,6 +3,7 @@ package me.wup.blog.controller;
 import lombok.AllArgsConstructor;
 import me.wup.blog.dto.UserDTO;
 import me.wup.blog.dto.UserInsertDTO;
+import me.wup.blog.dto.UserUpdateDTO;
 import me.wup.blog.services.UserService;
 import org.hibernate.annotations.common.reflection.XMethod;
 import org.springframework.data.domain.Page;
@@ -43,8 +44,8 @@ public class UserController  implements Serializable {
     }
 
     @PutMapping(value = "/update/{id}")
-    public ResponseEntity<UserDTO> updateUser (@Valid @RequestBody UserDTO userDTO, @PathVariable Long id){
-        return ResponseEntity.ok().body(userService.updateUser(userDTO,id));
+    public ResponseEntity<UserDTO> updateUser (@Valid @RequestBody UserUpdateDTO userUpdateDTO, @PathVariable Long id){
+        return ResponseEntity.ok().body(userService.updateUser(userUpdateDTO,id));
     }
 
     @DeleteMapping(value = "/{id}")
